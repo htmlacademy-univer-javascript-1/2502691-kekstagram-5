@@ -58,12 +58,14 @@ function createPhoto () {
     url: `photos/${getRandomInteger(1, 25)}.jpg`,
     description: 'фото',
     likes: createRandomIdFromRangeGenerator(15, 200),
-    comments: comments};
+    comments: comments
+  };
 }
 
 function createArrayOfPhotos () {
+  const ArrayOfPhotos = [];
   for (let i = 0; i < 25; i++) {
-    createPhoto();
+    ArrayOfPhotos.push(createPhoto());
   }
 }
 createArrayOfPhotos();
