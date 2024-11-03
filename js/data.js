@@ -46,4 +46,4 @@ function createArrayOfPhotos () {
   }
 }
 
-export { MESSAGES, NAMES, createArrayOfPhotos };
+export { createArrayOfPhotos };
