@@ -1,3 +1,2 @@
-import {createArrayOfPhotos} from './util.js';
-
-createArrayOfPhotos();
+import { renderPicture } from './preview.js';
+renderPicture();
