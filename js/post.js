@@ -1,12 +1,30 @@
-import { createCommentsFragment } from './comments.js';
 import { isEscapeKey } from './util.js';
 
 const bigPicture = document.querySelector('.big-picture');
+const commentTemplate = document.querySelector('#comment').content.querySelector('.social__comment');
 const social = bigPicture.querySelector('.social');
 const socialComments = social.querySelector('.social__comments');
 const socialCommentCount = social.querySelector('.social__comment-count');
 const bigPictureCancel = document.querySelector('.big-picture__cancel');
 const overlay = document.querySelector('.overlay');
+
+const createComment = (comment) => {
+  const commentBlock = commentTemplate.cloneNode(true);
+  commentBlock.querySelector('.social__picture').src = comment.avatar;
+  commentBlock.querySelector('.social__picture').alt = comment.name;
+  commentBlock.querySelector('.social__text').textContent = comment.message;
+
+  return commentBlock;
+};
+
+const createCommentsFragment = (comments) => {
+  const commentsFragment = document.createDocumentFragment();
+  comments.forEach((comment) => {
+    commentsFragment.appendChild(createComment(comment));
+  });
+
+  return commentsFragment;
+};
 
 const onPopupEscKeydown = (evt) => {
   if (isEscapeKey(evt)) {
