@@ -43,7 +43,8 @@ const createCommentsFragment = (comments) => {
 };
 
 const renderComments = (comments) => {
-  const onCommentsLoaderClick = (comments) => {
+
+  const onCommentsLoaderClick = () => {
     renderComments(comments);
   };
 
@@ -73,27 +74,27 @@ const renderComments = (comments) => {
   toggleHiddenLoadComments(true);
 };
 
-const onPopupEscKeydown = (evt) => {
+function onPopupEscKeydown (evt) {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     closeBigPicture();
   }
-};
+}
 
-const onOverlayClick = (evt) => {
+function onOverlayClick (evt) {
   if (!evt.target.closest('.big-picture__preview')) {
     closeBigPicture();
   }
-};
+}
 
-const closeBigPicture = () => {
+function closeBigPicture () {
   bigPicture.classList.add('hidden');
   document.querySelector('body').classList.remove('modal-open');
 
   bigPictureCancel.removeEventListener('click', closeBigPicture);
   document.removeEventListener('keydown', onPopupEscKeydown);
   overlay.removeEventListener('click', onOverlayClick);
-};
+}
 
 const renderPost = (post) => {
   bigPicture.querySelector('.big-picture__img img').src = post.url;
