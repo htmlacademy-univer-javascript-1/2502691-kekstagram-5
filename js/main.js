@@ -1,3 +1,3 @@
 import { renderPicture } from './preview.js';
 renderPicture();
-import './postLoadingWindow.js';
+import './post-loading-form.js';
