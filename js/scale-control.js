@@ -1,41 +1,43 @@
 const MIN = 25;
 const MAX = 100;
 const STEP = 25;
+const DEFAULT_SIZE = 100;
 
-const scaleControlValue = document.querySelector('.scale__control--value');
-const imgUploadPreview = document.querySelector('.img-upload__preview img');
+const smallerButtonForm = document.querySelector('.scale__control--smaller');
+const biggerButtonForm = document.querySelector('.scale__control--bigger');
+const scaleInputForm = document.querySelector('.scale__control--value');
+const image = document.querySelector('.img-upload__preview img');
 
-const getValue = (percent) => {
-  if (percent[percent.length - 1] === '%') {
-    return +percent.slice(0, percent.length - 1);
-  } else {
-    return +percent;
-  }
+const scaleImage = (value) => {
+  image.style.transform = `scale(${value / 100})`;
+  scaleInputForm.value = `${value}%`;
 };
 
-const zoomImage = (value) => {
-  scaleControlValue.value = `${value}%`;
-  imgUploadPreview.style = `transform: scale(${value / 100})`;
-};
+const onSmallerButtonClick = () => {
+  const currentValue = parseInt(scaleInputForm.value, 10);
+  let newValue = currentValue - STEP;
 
-const zoomIn = () => {
-  let value = getValue(scaleControlValue.value) - STEP;
-
-  if (value < MIN) {
-    value = MIN;
+  if (newValue < MIN) {
+    newValue = MIN;
   }
 
-  zoomImage(value);
+  scaleImage(newValue);
 };
 
-const zoomOut = () => {
-  let value = getValue(scaleControlValue.value) + STEP;
+const onBiggerButtonClick = () => {
+  const currentValue = parseInt(scaleInputForm.value, 10);
+  let newValue = currentValue + STEP;
 
-  if (value > MAX) {
-    value = MAX;
+  if (newValue > MAX) {
+    newValue = MAX;
   }
 
-  zoomImage(value);
+  scaleImage(newValue);
 };
 
-export { zoomIn, zoomOut };
+const resetScale = () => scaleImage(DEFAULT_SIZE);
+
+smallerButtonForm.addEventListener('click', onSmallerButtonClick);
+biggerButtonForm.addEventListener('click', onBiggerButtonClick);
+
+export { resetScale };
