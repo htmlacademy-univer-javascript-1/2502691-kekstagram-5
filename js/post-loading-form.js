@@ -165,4 +165,5 @@ const onFormSubmit = (cb) => {
 
 fileField.addEventListener('change', onFileInputChange);
 cancelButton.addEventListener('click', onCancelButtonClick);
+
 export { onFormSubmit, closeModal, showFullSuccessMessage, showFullErrorMessage };
