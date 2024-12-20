@@ -1,4 +1,4 @@
-import { renderPreviews } from './preview.js';
+import { renderPreviews } from './open-preview.js';
 import { getData, sendData } from './api.js';
 import { showAlert, debounce } from './util.js';
 import { onFormSubmit, closeModal, showFullSuccessMessage, showFullErrorMessage } from './edit-form.js';
@@ -23,3 +23,5 @@ try {
 } catch (err) {
   showAlert(err.message);
 }
+
+import './upload-photo.js';

@@ -134,6 +134,7 @@ const closeModalMessageWithClickOnBody = (evt) => {
   evt.stopPropagation();
   if (evt.target.matches('.success') || evt.target.matches('.error')) {
     hideModalMessage();
+    document.removeEventListener('click', closeModalMessageWithClickOnBody);
   }
 };
 
@@ -144,6 +145,7 @@ const closeModalMessageWithClickOnButton = () => {
 const closeModalMessageWithPressEsc = (evt) => {
   if (isEscEvent(evt)) {
     hideModalMessage ();
+    document.removeEventListener('keydown', closeModalMessageWithPressEsc);
   }
 };
 
