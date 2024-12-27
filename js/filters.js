@@ -1,43 +1,40 @@
-const NUMBER_OF_PHOTOS = 10;
+import {debounce, shuffle} from './util.js';
+import {pictures} from './main.js';
+import {createPictures, removePictures} from './open-preview.js';
 
-const imgFiltersElement = document.querySelector('.img-filters');
-const defaultFilterButton = imgFiltersElement.querySelector('#filter-default');
-const randomFilterButton = imgFiltersElement.querySelector('#filter-random');
-const discussedFilterButton = imgFiltersElement.querySelector('#filter-discussed');
+const RANDOM_PICTURES_MAX = 10;
 
-const setActiveFilter = (button) => {
-  document.querySelector('.img-filters__button--active').classList.remove('img-filters__button--active');
-  button.classList.add('img-filters__button--active');
+const filtersForm = document.querySelector('.img-filters__form');
+let activeButton = document.querySelector('.img-filters__button--active');
+
+const Filters = {
+  'filter-default': () => pictures.slice(),
+  'filter-random': () => shuffle(pictures.slice()).slice(0, RANDOM_PICTURES_MAX),
+  'filter-discussed': () => pictures.slice().sort((first, second) => second.comments.length - first.comments.length),
 };
 
-const shuffleThumbnails = () => Math.random() - 0.5;
-
-const compareThumbnails = (photoA, photoB) => {
-  const rankA = photoA.comments.length;
-  const rankB = photoB.comments.length;
-  return rankB - rankA;
+const applyFilters = (id) =>{
+  removePictures();
+  createPictures(Filters[id]());
 };
 
-const initFilterListeners = (photos, showThumbnails) => {
-  defaultFilterButton.addEventListener('click', (evt) => {
-    showThumbnails(photos);
-    setActiveFilter(evt.target);
-  });
 
-  randomFilterButton.addEventListener('click', (evt) => {
-    showThumbnails(photos
-      .slice()
-      .sort(shuffleThumbnails)
-      .slice(0, NUMBER_OF_PHOTOS));
-    setActiveFilter(evt.target);
-  });
-
-  discussedFilterButton.addEventListener('click', (evt) => {
-    showThumbnails(photos
-      .slice()
-      .sort(compareThumbnails));
-    setActiveFilter(evt.target);
-  });
+const toogleButtons = (evt) => {
+  activeButton.classList.remove('img-filters__button--active');
+  activeButton = evt.target;
+  activeButton.classList.add('img-filters__button--active');
 };
 
-export { initFilterListeners };
+const onFilterFormClick = debounce((evt) => {
+  evt.preventDefault();
+  if(evt.target.type === 'button'){
+    applyFilters(evt.target.id);
+    toogleButtons(evt);
+  }
+});
+
+const initFilters = () => {
+  filtersForm.addEventListener('click', onFilterFormClick);
+};
+
+export{initFilters};

@@ -1,27 +1,40 @@
-import { renderPreviews } from './open-preview.js';
-import { getData, sendData } from './api.js';
-import { showAlert, debounce } from './util.js';
-import { onFormSubmit, closeModal, showFullSuccessMessage, showFullErrorMessage } from './edit-form.js';
-import { initFilterListeners } from './filter.js';
+import { createPictures } from './open-preview.js';
+import './open-post.js';
+import './hashtag-pristine.js';
+import { openForm } from './form.js';
+import { loadData } from './api.js';
+import { initFilters } from './filters.js';
 
-const RENDER_PHOTOS_DELAY = 500;
+let pictures = [];
 
-onFormSubmit(async (data) => {
-  try {
-    await sendData(data);
-    closeModal();
-    showFullSuccessMessage();
-  } catch {
-    showFullErrorMessage();
-  }
-});
+const onSuccess = (data) => {
+  pictures = data.slice();
+  createPictures(pictures);
+  document.querySelector('.img-filters').classList.remove('img-filters--inactive');
 
-try {
-  const data = await getData();
-  renderPreviews(data);
-  initFilterListeners(data, debounce(renderPreviews, RENDER_PHOTOS_DELAY));
-} catch (err) {
-  showAlert(err.message);
-}
+};
 
-import './upload-photo.js';
+const onFail = () =>{
+  const errorMesage = document.createElement('div');
+  errorMesage.style.position = 'absolute';
+  errorMesage.style.left = 0;
+  errorMesage.style.top = 0;
+  errorMesage.style.right = 0;
+
+  errorMesage.style.fontSize = '20px';
+  errorMesage.style.backgroundColor = '#e1375f';
+  errorMesage.style.padding = '15px';
+
+  errorMesage.style.textAlign = 'center';
+  errorMesage.textContent = 'Ошибка при загрузке изображений';
+  document.body.append(errorMesage);
+
+};
+
+
+loadData(onSuccess, onFail);
+openForm();
+
+initFilters();
+
+export {pictures};

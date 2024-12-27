@@ -1,26 +1,40 @@
-import { openPost } from './open-post.js';
+import {showBigPicture} from './open-post.js';
 
-const thumbnailTemplate = document.querySelector('#picture').content.querySelector('.picture');
-const pictures = document.querySelector('.pictures');
-const thumbnailListFragment = document.createDocumentFragment();
-const imgFiltersElement = document.querySelector('.img-filters');
+const pictureContainer = document.querySelector('.pictures');
+const pictureFragments = document.createDocumentFragment();
+const picturesTemplate = document.querySelector('#picture')
+  .content
+  .querySelector('a');
 
-const renderPreviews = (thumbnails) => {
-  thumbnails.forEach((element) => {
-    const thumbnailElement = thumbnailTemplate.cloneNode(true);
-    thumbnailElement.querySelector('.picture__img').setAttribute('src', element.url);
-    thumbnailElement.querySelector('.picture__img').setAttribute('alt', element.description);
-    thumbnailElement.querySelector('.picture__likes').textContent = element.likes;
-    thumbnailElement.querySelector('.picture__comments').textContent = element.comments.length;
-    thumbnailListFragment.append(thumbnailElement);
-    openPost(thumbnailElement, element);
-  });
 
-  pictures.querySelectorAll('.picture').forEach((element) => {
-    element.remove();
-  });
-  pictures.append(thumbnailListFragment);
-  imgFiltersElement.classList.remove('img-filters--inactive');
+const removePictures = () => {
+  document.querySelectorAll('.picture').forEach((photo) => photo.remove());
 };
 
-export { renderPreviews};
+const createPicture = (picture) => {
+  const currentPicture = picturesTemplate.cloneNode(true);
+
+  currentPicture.querySelector('img').src = picture.url;
+  currentPicture.querySelector('img').alt = picture.description;
+  currentPicture.querySelector('.picture__comments').textContent = picture.comments.length;
+  currentPicture.querySelector('.picture__likes').textContent = picture.likes;
+
+
+  const onPictureClick = (evt) => {
+    evt.preventDefault();
+    showBigPicture(picture);
+  };
+  currentPicture.dataset.id = picture.id;
+  currentPicture.addEventListener('click', onPictureClick);
+  pictureFragments.append(currentPicture);
+};
+
+const createPictures = (pictures) => {
+  pictures.forEach((picture) => {
+    createPicture(picture);
+  });
+
+  pictureContainer.append(pictureFragments);
+};
+
+export {createPictures, removePictures};
