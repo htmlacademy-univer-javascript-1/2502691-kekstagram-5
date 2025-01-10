@@ -45,7 +45,7 @@ const Effects = {
     measurementUnit: ''}
 };
 
-const sliderConnector = () => {
+const connectSlider = () => {
   if (currentRadio !== 'none') {
     const effect = Effects[currentRadio];
     picture.style.filter = `${effect.filter}(${sliderElement.noUiSlider.get()}${effect.measurementUnit})`;
@@ -67,7 +67,7 @@ const changeSlider = (newEffect) => {
       step: effect.step
     });
     sliderUpload.classList.remove('visually-hidden');
-    sliderConnector();
+    connectSlider();
   } else{
     sliderUpload.classList.add('visually-hidden');
     picture.style.filter = '';
@@ -75,7 +75,7 @@ const changeSlider = (newEffect) => {
 };
 
 const onNoUiSliderChange = () => {
-  sliderConnector();
+  connectSlider();
 };
 
 const onRadioChange = (evt) =>{

@@ -68,7 +68,7 @@ const hashtagHandler = (value) =>{
   });
 };
 
-const validateInput = () =>{
+const validateInputHandler = () =>{
   if(pristine.validate()){
     submitBtn.disabled = false;
   } else{
@@ -87,8 +87,8 @@ pristine.addValidator(
   'Не более 140 символов'
 );
 
-inputHashtag.addEventListener('input', validateInput);
-textDescriptionInput.addEventListener('input', validateInput);
+inputHashtag.addEventListener('input', validateInputHandler);
+textDescriptionInput.addEventListener('input', validateInputHandler);
 formUpload.addEventListener('submit', (evt) => {
   evt.preventDefault();
   pristine.validate();
